@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="㈜한국이엔지 - 기계설비·실내건축 면허 보유, 경북 구미 플랜트 배관·VCR 배관·장비 Hook-up·가스·약품 배관 전문 기업">
+<style>body{margin:0}img{max-width:100%}html{scroll-behavior:smooth}</style>
+<title>한국이엔지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&family=Gothic+A1:wght@800;900&display=swap">
+<style>
+/* Layout: 배관 도면(P&ID)처럼 선과 라인번호로 구획한 단일 페이지. 로고의 빨강·파랑을 유체 라인 색으로 사용 */
+:root{
+  --bg:#f6f7fa; --surface:#ffffff; --fg:#14172b; --muted:#5a6078; --line:#d5d9e6;
+  --red:#e3120b; --blue:#1d14a8; --blue-soft:#eceafd; --grid:rgba(29,20,168,.06);
+  --display:"Gothic A1","IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1020; --surface:#161935; --fg:#e8eaf6; --muted:#a2a8c6; --line:#2c3058;
+  --red:#ff4a3d; --blue:#8f88ff; --blue-soft:#221f52; --grid:rgba(143,136,255,.07); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1020; --surface:#161935; --fg:#e8eaf6; --muted:#a2a8c6; --line:#2c3058;
+  --red:#ff4a3d; --blue:#8f88ff; --blue-soft:#221f52; --grid:rgba(143,136,255,.07); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.7;word-break:keep-all}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{display:flex}.mark i{width:22px;height:22px;border-radius:50%;display:block}
+.mark i:first-child{background:var(--red)}.mark i:last-child{background:var(--blue);margin-left:-4px}
+.brand b{font-family:var(--display);font-weight:900;font-size:19px;letter-spacing:.06em}
+.brand small{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;line-height:1.2}
+.nav ul{display:flex;gap:clamp(12px,3vw,28px);list-style:none;margin:0;padding:0;font-size:15px;font-weight:500}
+.nav ul a{text-decoration:none}.nav ul a:hover{color:var(--blue)}
+@media (max-width:640px){.nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;padding-block:clamp(56px,9vw,104px)}
+.tag{font-family:var(--mono);font-size:13px;color:var(--blue);letter-spacing:.06em}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(28px,4.2vw,46px);line-height:1.25;margin:12px 0 20px;text-wrap:balance;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--blue)}
+h1 span{color:var(--red)}
+.lead{font-size:clamp(16px,1.9vw,19px);color:var(--muted);max-width:34em;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-weight:700;font-size:15px;text-decoration:none;border:2px solid var(--blue)}
+.btn.primary{background:var(--blue);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0e1020}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#0e1020}}
+.btn.ghost{color:var(--blue)}
+.pipes{width:100%;height:auto;max-width:100%}
+.pipes .r{stroke:var(--red)}.pipes .b{stroke:var(--blue)}.pipes .g{stroke:var(--line)}
+.pipes text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+.pipes .flow{stroke-dasharray:6 10;animation:flow 1.6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-32}}
+@media (prefers-reduced-motion:reduce){.pipes .flow{animation:none}}
+@media (max-width:820px){.hero .wrap{grid-template-columns:1fr}.pipes{max-width:420px}}
+
+/* sections */
+section{padding-block:clamp(64px,9vw,104px)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--fg);padding-bottom:14px;margin-bottom:36px}
+h2{font-family:var(--display);font-weight:900;font-size:clamp(26px,3.6vw,38px);margin:0;line-height:1.25}
+.sec-head p{margin:0;color:var(--muted);font-size:15px}
+
+/* business */
+.biz{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.biz-main{background:var(--surface);border:1px solid var(--line);padding:clamp(24px,3vw,36px);display:flex;flex-direction:column;gap:10px}
+.biz-main h3{font-family:var(--display);font-weight:800;font-size:24px;margin:0;display:flex;align-items:center;gap:10px}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+.biz-main p{margin:0;color:var(--muted)}
+.lines{margin-top:48px;border-top:1px solid var(--line)}
+.lines li{list-style:none;display:grid;grid-template-columns:110px 1fr 1.4fr;gap:20px;padding-block:20px;border-bottom:1px solid var(--line);align-items:baseline}
+.lines ul{margin:0;padding:0}
+.lines code{font-family:var(--mono);font-size:13px;color:var(--blue)}
+.lines strong{font-size:18px}
+.lines span{color:var(--muted);font-size:15px}
+@media (max-width:720px){.biz{grid-template-columns:1fr}.lines li{grid-template-columns:1fr;gap:4px}}
+
+/* ceo */
+.ceo{background:var(--blue-soft)}
+.ceo .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px}
+.ceo blockquote{margin:0;font-size:clamp(17px,2vw,19px);max-width:38em}
+.ceo blockquote p{margin:0 0 1em}
+.sign{margin-top:28px;display:flex;align-items:baseline;gap:14px}
+.sign small{color:var(--muted);font-size:14px}
+.sign b{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:.3em}
+@media (max-width:720px){.ceo .wrap{grid-template-columns:1fr;gap:24px}}
+
+/* contact */
+.contact{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);padding:clamp(22px,3vw,32px);min-width:0}
+.card h3{margin:0 0 18px;font-size:13px;font-family:var(--mono);letter-spacing:.1em;color:var(--muted);font-weight:500}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:12px 20px}
+dt{color:var(--muted);font-size:14px;white-space:nowrap}
+dd{margin:0;font-weight:500;font-variant-numeric:tabular-nums;user-select:all;min-width:0;overflow-wrap:anywhere}
+.big{font-size:22px;font-weight:700}
+.maplink{display:inline-block;margin-top:20px;color:var(--blue);font-weight:700;text-decoration:none;border-bottom:2px solid var(--blue)}
+@media (max-width:720px){.contact{grid-template-columns:1fr}}
+
+/* certifications */
+.certs{border-bottom:1px solid var(--line);background:var(--surface)}
+.certs .wrap{display:grid;grid-template-columns:auto 1fr 1fr;gap:clamp(16px,4vw,48px);align-items:center;padding-block:28px}
+.certs .label{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--muted)}
+.cert{display:flex;align-items:center;gap:16px;min-width:0}
+.seal{flex:none;width:58px;height:58px;border-radius:50%;border:3px solid currentColor;display:grid;place-items:center;font-family:var(--mono);font-weight:500;font-size:10px;line-height:1.1;text-align:center}
+.cert b{display:block;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:.02em}
+.cert span{color:var(--muted);font-size:14px}
+@media (max-width:720px){.certs .wrap{grid-template-columns:1fr;gap:18px}}
+
+/* motto */
+.motto-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 28px;margin-bottom:32px}
+.motto-head .slogan{font-family:var(--mono);font-size:clamp(15px,2vw,18px);color:var(--blue);font-weight:500}
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:0;padding:0;list-style:none}
+.values li{border-top:4px solid var(--blue);padding-top:18px;min-width:0}
+.values li:nth-child(2){border-color:var(--red)}
+.values li:nth-child(3){border-color:var(--fg)}
+.values b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(19px,2.2vw,23px);line-height:1.4}
+@media (max-width:720px){.values{grid-template-columns:1fr}}
+
+/* history */
+.history{border-top:1px solid var(--line)}
+.year{display:grid;grid-template-columns:120px 1fr;gap:20px;padding-block:22px;border-bottom:1px solid var(--line)}
+.year h3{margin:0;font-family:var(--mono);font-weight:500;font-size:24px;color:var(--blue);line-height:1.2}
+.year ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.year li{display:grid;grid-template-columns:44px 1fr;gap:12px;min-width:0}
+.year li time{font-family:var(--mono);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
+.year li.key span{font-weight:700}
+.year li.key span::after{content:"1차 협력";margin-left:8px;font-size:12px;font-weight:700;color:var(--red);border:1px solid var(--red);padding:1px 6px;white-space:nowrap}
+.year li.work span{color:var(--muted);font-size:15px}
+.year li.work span::before{content:"└ ";color:var(--line)}
+@media (max-width:560px){.year{grid-template-columns:1fr;gap:10px}}
+
+/* sub heading */
+.sub-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin:64px 0 24px}
+.sub-h h3{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(21px,2.6vw,26px)}
+.sub-h p{margin:0;color:var(--muted);font-size:15px}
+
+/* products */
+.edge{display:inline-block;font-family:var(--display);font-weight:800;font-size:16px;color:var(--blue);background:var(--blue-soft);padding:6px 14px;margin:-8px 0 22px}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.prod{background:var(--surface);padding:clamp(22px,3vw,32px);display:flex;flex-direction:column;gap:12px;min-width:0}
+.prod code{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em}
+.prod h4{margin:0;font-family:var(--display);font-weight:800;font-size:22px;line-height:1.3}
+.prod ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px;display:grid;gap:4px}
+@media (max-width:720px){.products{grid-template-columns:1fr}}
+
+/* policy */
+.policy{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0;padding:0;list-style:none}
+.policy li{background:var(--surface);border:1px solid var(--line);padding:22px;min-width:0}
+.policy b{display:block;font-family:var(--display);font-weight:800;font-size:20px;margin-bottom:6px}
+.policy span{color:var(--muted);font-size:15px}
+@media (max-width:900px){.policy{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.policy{grid-template-columns:1fr}}
+
+/* org chart */
+.org{overflow-x:auto;padding-bottom:8px}
+.org-in{min-width:640px;--c:var(--muted)}
+.org-top{display:flex;flex-direction:column;align-items:center}
+.node{display:inline-block;border:2px solid var(--blue);background:var(--surface);padding:10px 18px;font-weight:700;white-space:nowrap;font-size:15px}
+.node.ceo{background:var(--blue);color:var(--surface);font-family:var(--mono);letter-spacing:.1em;padding:12px 36px}
+.node.leaf{border-width:1px;border-color:var(--c);font-weight:500}
+.staff-row{position:relative;width:100%;height:72px}
+.staff-row::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:2px solid var(--c)}
+.staff-row .stub{position:absolute;left:50%;top:50%;width:72px;border-top:2px solid var(--c)}
+.staff-row .node{position:absolute;left:calc(50% + 72px);top:50%;transform:translateY(-50%);border-color:var(--red)}
+.tree ul{display:flex;margin:0;padding:0;position:relative;width:100%}
+.tree li{flex:1;list-style:none;position:relative;padding:24px 6px 0;display:flex;flex-direction:column;align-items:center}
+.tree li::before{content:"";position:absolute;top:0;left:0;right:0;border-top:2px solid var(--c)}
+.tree li:first-child::before{left:50%}
+.tree li:last-child::before{right:50%}
+.tree li:only-child::before{display:none}
+.tree li::after{content:"";position:absolute;top:0;left:50%;height:24px;border-left:2px solid var(--c);margin-left:-1px}
+.tree ul ul{padding-top:24px}
+.tree ul ul::before{content:"";position:absolute;top:0;left:50%;height:24px;border-left:2px solid var(--c)}
+
+footer{border-top:1px solid var(--line);padding-block:32px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="한국이엔지 처음으로">
+      <span class="mark" aria-hidden="true"><i></i><i></i></span>
+      <span><b>㈜한국이엔지</b><small>HANKUK Engineering Co., Ltd.</small></span>
+    </a>
+    <ul>
+      <li><a href="#business">사업분야</a></li>
+      <li><a href="#motto">회사소개</a></li>
+      <li><a href="#history">연혁</a></li>
+      <li><a href="#org">조직</a></li>
+      <li><a href="#contact">오시는 길</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="tag">MECHANICAL · INTERIOR · PLANT PIPING</div>
+        <h1>보이지 않는 곳까지<br><em>정확하게</em> <span>잇습니다</span></h1>
+        <p class="lead">㈜한국이엔지는 기계설비와 실내건축 면허를 보유하고 있으며, 경북 구미에서 설비·실내 공사와 플랜트 배관을 시공하는 전문 기업입니다. VCR 배관부터 장비 Hook-up, 가스·약품 배관까지 현장에 맞춰 설계하고 시공합니다. ISO 9001 품질경영과 ISO 45001 안전보건경영 인증을 받은 체계로 일합니다.</p>
+        <div class="cta">
+          <a class="btn primary" href="#contact">견적·상담 문의</a>
+          <a class="btn ghost" href="#business">사업분야 보기</a>
+        </div>
+      </div>
+      <svg class="pipes" viewBox="0 0 360 300" fill="none" aria-hidden="true">
+        <path class="g" d="M20 60H340M20 150H340M20 240H340" stroke-width="1"/>
+        <path class="b" d="M30 60H150a20 20 0 0 1 20 20V220a20 20 0 0 0 20 20H330" stroke-width="10" stroke-linecap="round"/>
+        <path class="r" d="M30 150H110a20 20 0 0 0 20-20V40a20 20 0 0 1 20-20H330" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+        <path class="flow" d="M30 60H150a20 20 0 0 1 20 20V220a20 20 0 0 0 20 20H330" stroke="#fff" stroke-width="2" opacity=".85"/>
+        <path class="flow" d="M30 150H110a20 20 0 0 0 20-20V40a20 20 0 0 1 20-20H330" stroke="#fff" stroke-width="2" opacity=".85"/>
+        <rect x="236" y="226" width="22" height="28" class="b" stroke-width="3" fill="var(--surface)"/>
+        <rect x="236" y="6" width="22" height="28" class="r" stroke-width="3" fill="var(--surface)"/>
+        <text x="30" y="96">GAS-01  N₂</text>
+        <text x="30" y="186">CHEM-02</text>
+        <text x="200" y="280">VCR ¼″ · SUS316L EP</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="certs" id="certs">
+    <div class="wrap">
+      <div class="label">CERTIFIED</div>
+      <div class="cert" style="color:var(--blue)">
+        <div class="seal">ISO<br>9001</div>
+        <div><b style="color:var(--fg)">ISO 9001</b><span>품질경영시스템 인증</span></div>
+      </div>
+      <div class="cert" style="color:var(--red)">
+        <div class="seal">ISO<br>45001</div>
+        <div><b style="color:var(--fg)">ISO 45001</b><span>안전보건경영시스템 인증</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="business">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>사업분야</h2>
+        <p>설비와 공간을 함께 시공합니다</p>
+      </div>
+      <div class="biz">
+        <article class="biz-main">
+          <h3><span class="dot" style="background:var(--blue)"></span>기계설비</h3>
+          <p>생산 현장의 장비와 유틸리티를 연결하는 배관 설비를 시공합니다. 공정 가스, 약품, 냉각수 등 유체 특성에 맞는 자재와 공법을 적용합니다.</p>
+        </article>
+        <article class="biz-main">
+          <h3><span class="dot" style="background:var(--red)"></span>실내건축</h3>
+          <p>사무 공간과 생산 시설의 실내 공사를 수행합니다. 설비 공사와 함께 진행해 공정 간 간섭을 줄이고 일정을 맞춥니다.</p>
+        </article>
+      </div>
+      <div class="lines">
+        <ul>
+          <li><code>LINE 01</code><strong>플랜트 배관</strong><span>공장·생산 설비의 유틸리티 및 공정 배관</span></li>
+          <li><code>LINE 02</code><strong>VCR 배관공사</strong><span>고순도 가스용 VCR 피팅 배관 시공</span></li>
+          <li><code>LINE 03</code><strong>장비 Hook-up 배관</strong><span>장비 반입 후 메인 라인과 장비 간 연결</span></li>
+          <li><code>LINE 04</code><strong>가스 배관</strong><span>공정 가스 공급 라인 시공</span></li>
+          <li><code>LINE 05</code><strong>약품 배관</strong><span>케미컬 공급 라인 시공</span></li>
+        </ul>
+      </div>
+
+      <div class="sub-h">
+        <h3>사업품목</h3>
+        <p>비전을 달성하기 위한 혁신</p>
+      </div>
+      <div class="edge">제품 효율, 가격경쟁력 보유</div>
+      <div class="products">
+        <article class="prod">
+          <code>FORGED FLANGE</code>
+          <h4>단조 플랜지(FLANGE) 판매</h4>
+          <ul>
+            <li>㈜보령기업 생산제품 대리점</li>
+            <li>국내 대기업 다수 납품 실적 보유</li>
+          </ul>
+        </article>
+        <article class="prod">
+          <code>HEAT PUMP · HEAT EXCHANGER</code>
+          <h4>히트펌프 / 열교환기</h4>
+          <ul>
+            <li>삼영종합기계 / 쏜덱스코리아 대구·경북 대리점</li>
+            <li>100HP 이상 제품 납품 실적 보유</li>
+            <li>대형 디스플레이 사업장 히트펌프 납품</li>
+          </ul>
+        </article>
+        <article class="prod">
+          <code>VACUUM SYSTEM</code>
+          <h4>P-VAC, H-VAC</h4>
+          <ul>
+            <li>삼신진공 구미 대리점</li>
+            <li>대기업 디스플레이·반도체 사업장 납품 실적 보유</li>
+          </ul>
+        </article>
+        <article class="prod">
+          <code>UTILITY</code>
+          <h4>Utility System 및 시공</h4>
+          <ul>
+            <li>반도체, 플랜트 Utility 시공</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="motto">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>사훈</h2>
+        <p>There is no faith, no vision!</p>
+      </div>
+      <ul class="values">
+        <li><b>인재를 소중히 여기는 기업</b></li>
+        <li><b>세상의 변화에 적응하는 기업</b></li>
+        <li><b>책임과 주인의식의 기업</b></li>
+      </ul>
+
+      <div class="sub-h"><h3>경영방침</h3></div>
+      <ul class="policy">
+        <li><b>투명경영</b><span>투명한 경영으로 지속적인 기업 발전</span></li>
+        <li><b>인재양성</b><span>인재 양성으로 기업의 성장동력 확보</span></li>
+        <li><b>기술개발</b><span>기술 개발에 지속적인 투자</span></li>
+        <li><b>신뢰대응</b><span>고객에 대한 적극적인 대응으로 신뢰 확보</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="history" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>회사연혁</h2>
+        <p>2011년 설립 이후 걸어온 길</p>
+      </div>
+      <div class="history">
+        <div class="year"><h3>2011</h3><ol>
+          <li><time>05월</time><span>㈜뉴이엔지 법인 설립</span></li>
+          <li><time>11월</time><span>㈜한국이엔지로 상호 변경 및 대표이사 변경</span></li>
+          <li><time>11월</time><span>배관·열교환기·진공 설비 분야 5개사와 대리점 계약 체결</span></li>
+          <li class="work"><time></time><span>산업용 플랜지, 히트펌프, 진공 설비 공급 및 설치 공사 시작</span></li>
+        </ol></div>
+        <div class="year"><h3>2015</h3><ol>
+          <li><time>06월</time><span>대표이사 변경</span></li>
+        </ol></div>
+        <div class="year"><h3>2015<br>~2018</h3><ol>
+          <li><time></time><span>약 18개 업체와 협력업체 체결</span></li>
+          <li class="work"><time></time><span>반도체·디스플레이 생산 설비의 공정 배관 및 Utility 공사 수행</span></li>
+          <li class="work"><time></time><span>장비 Hook-up, VCR 가스 배관, 약품 배관 공사 수행</span></li>
+        </ol></div>
+        <div class="year"><h3>2019</h3><ol>
+          <li class="key"><time>01월</time><span>국내 대형 제지기업 1차 협력업체 체결</span></li>
+          <li class="work"><time></time><span>제지 공장 기계설비 및 배관 공사 수행</span></li>
+        </ol></div>
+        <div class="year"><h3>2021</h3><ol>
+          <li class="key"><time>07월</time><span>국내 대기업 2차전지 사업장 1차 협력업체 체결</span></li>
+          <li class="work"><time></time><span>2차전지 생산 라인 장비 Hook-up 및 Utility 배관 공사 수행</span></li>
+        </ol></div>
+        <div class="year"><h3>2023</h3><ol>
+          <li class="key"><time>07월</time><span>소재 전문기업 1차 협력업체 체결</span></li>
+          <li class="work"><time></time><span>소재 생산 설비 배관 및 실내 공사 수행</span></li>
+        </ol></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="org" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>회사조직</h2>
+      </div>
+      <div class="org">
+        <div class="org-in">
+          <div class="org-top">
+            <div class="node ceo">CEO</div>
+            <div class="staff-row"><span class="stub"></span><div class="node">경영관리본부</div></div>
+          </div>
+          <div class="tree">
+            <ul>
+              <li><div class="node">공장</div>
+                <ul><li><div class="node leaf">품질</div></li><li><div class="node leaf">생산</div></li></ul>
+              </li>
+              <li><div class="node">영업본부</div>
+                <ul><li><div class="node leaf">영업팀</div></li><li><div class="node leaf">마케팅팀</div></li></ul>
+              </li>
+              <li><div class="node">관리본부</div>
+                <ul><li><div class="node leaf">총무팀</div></li><li><div class="node leaf">인사팀</div></li></ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>문의 · 오시는 길</h2>
+        <p>견적과 시공 상담은 전화나 메일로 연락 주세요</p>
+      </div>
+      <div class="contact">
+        <div class="card">
+          <h3>CONTACT</h3>
+          <dl>
+            <dt>전화</dt><dd class="big">054-476-1283</dd>
+            <dt>팩스</dt><dd>054-476-1282</dd>
+            <dt>이메일</dt><dd>lgh0014@naver.com</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <h3>LOCATION</h3>
+          <dl>
+            <dt>본사</dt><dd>경북 구미시 산동읍 동곡3길 28</dd>
+            <dt>공장</dt><dd>경북 구미시 산동읍 동곡3길 28</dd>
+          </dl>
+          <a class="maplink" href="https://map.naver.com/p/search/%EA%B2%BD%EB%B6%81%20%EA%B5%AC%EB%AF%B8%EC%8B%9C%20%EC%82%B0%EB%8F%99%EC%9D%8D%20%EB%8F%99%EA%B3%A13%EA%B8%B8%2028" target="_blank" rel="noopener">네이버 지도에서 보기 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>㈜한국이엔지 · 대표 임근현 · 경북 구미시 산동읍 동곡3길 28</span>
+    <span>© 2026 HANKUK Engineering Co., Ltd.</span>
+  </div>
+</footer>
+
+</body>
+</html>
